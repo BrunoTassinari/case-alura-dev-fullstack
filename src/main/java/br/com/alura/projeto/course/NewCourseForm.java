@@ -1,25 +1,33 @@
 package br.com.alura.projeto.course;
 
-import jakarta.validation.constraints.Email;
+import br.com.alura.projeto.category.Category;
+import br.com.alura.projeto.user.User;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
 
 public class NewCourseForm {
 
-    @NotBlank
+    @NotBlank(message = "O nome é obrigatório")
     private String name;
 
-    @NotBlank
-    @Length(min = 4, max = 10)
+    @NotBlank(message = "O código é obrigatório")
+    @Length(min = 4, max = 10, message = "O código deve ter entre 4 e 10 caracteres")
+    @Pattern(regexp = "^[a-z-]*$", message = "O código deve conter apenas letras minúsculas e hífens")
     private String code;
+
+    @NotNull(message = "O instrutor é obrigatório")
+    private Long instructorId;
+
+    @NotNull(message = "A categoria é obrigatória")
+    private Long categoryId;
 
     private String description;
 
-    @NotBlank
-    @Email
-    private String instructorEmail;
-
-    public NewCourseForm() {}
+    public Course toModel(User user, Category category) {
+        return new Course(name, code, user, category, description);
+    }
 
     public String getName() {
         return name;
@@ -37,19 +45,27 @@ public class NewCourseForm {
         this.code = code;
     }
 
+    public Long getInstructorId() {
+        return instructorId;
+    }
+
+    public void setInstructorId(Long instructorId) {
+        this.instructorId = instructorId;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getInstructorEmail() {
-        return instructorEmail;
-    }
-
-    public void setInstructorEmail(String instructorEmail) {
-        this.instructorEmail = instructorEmail;
     }
 }
