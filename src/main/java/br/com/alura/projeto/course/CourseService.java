@@ -43,6 +43,13 @@ public class CourseService {
         courseRepository.save(course);
     }
 
+    public List<CourseDTO>  findAllCourses(){
+       return courseRepository.findAll()
+               .stream()
+               .map(CourseDTO::new)
+               .toList();
+    }
+
     public void populateForm(Model model) {
         List<CategoryOptionDTO> categories = categoryRepository.findAll().stream()
                 .map(c -> new CategoryOptionDTO(c.getId(), c.getName())).toList();

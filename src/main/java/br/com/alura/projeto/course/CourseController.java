@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 @Controller
 public class CourseController {
 
@@ -20,10 +22,12 @@ public class CourseController {
     }
 
     @GetMapping("/admin/courses")
-    public String list(@Valid NewCourseForm form) {
-        // TODO: Implementar a Questão 1 - Listagem de Cursos aqui...
+    public String list(Model model) {
+        List<CourseDTO> list = courseService.findAllCourses();
 
-        return "";
+        model.addAttribute("courses", list);
+
+        return "admin/course/list";
     }
 
     @GetMapping("/admin/course/new")

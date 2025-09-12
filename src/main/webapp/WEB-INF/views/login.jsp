@@ -12,7 +12,7 @@
     <div class="login-box">
         <h2>Já estuda com a gente?</h2>
         <p>Faça seu login e boa aula!</p>
-        <a href="/admin/categories" class="btn-login">ENTRAR</a>
+        <a href="/admin/courses" class="btn-login">ENTRAR</a>
     </div>
 
     <div class="courses">
