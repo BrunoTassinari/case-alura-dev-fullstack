@@ -31,6 +31,10 @@ public class User {
         this.password = EncryptUtil.toMD5(password);
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -49,5 +53,9 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public Boolean isInstructor() {
+        return role == Role.INSTRUCTOR;
     }
 }
