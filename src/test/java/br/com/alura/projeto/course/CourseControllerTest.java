@@ -49,7 +49,7 @@ public class CourseControllerTest {
         instructor = new User("Instructor", "instructor@test.com", Role.INSTRUCTOR, "password");
         userRepository.save(instructor);
 
-        category = new Category("Programming", "programming", "Vermelho", 1);
+        category = new Category("Programming", "programming", "#6BD1FF", 1);
         categoryRepository.save(category);
     }
 

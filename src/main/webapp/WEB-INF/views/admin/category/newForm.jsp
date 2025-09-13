@@ -30,15 +30,16 @@
                     <form:input path="code" id="newCategory-code" cssClass="form-control" required="required"/>
                 </div>
 
-                <div class="col-md-9">
-                    <label for="newCategory-color">Cor:</label>
-                    <form:input path="color" id="newCategory-color" cssClass="form-control" required="required"/>
-                </div>
-
-                <div class="col-md-9">
+                 <div class="col-md-9">
                     <label for="newCategory-order">Ordem:</label>
                     <form:input path="order" type="number" min="1" id="newCategory-order" cssClass="form-control" required="required"/>
                 </div>
+
+                <div class="col-md-9">
+                    <label for="newCategory-color">Cor:</label>
+                    <form:input type="color" path="color" id="newCategory-color" cssClass="form-control" style="width: 48px; padding: 0" required="required"/>
+                </div>
+
             </div>
 
             <input class="btn btn-success submit" type="submit" value="Salvar"/>

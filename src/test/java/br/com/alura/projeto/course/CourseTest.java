@@ -5,14 +5,9 @@ import br.com.alura.projeto.exceptions.BusinessException;
 import br.com.alura.projeto.exceptions.DataConflictException;
 import br.com.alura.projeto.user.Role;
 import br.com.alura.projeto.user.User;
-import br.com.alura.projeto.util.EncryptUtil;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
-
-import static br.com.alura.projeto.user.Role.STUDENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
@@ -23,7 +18,7 @@ public class CourseTest {
 
     @BeforeEach
     void setUp() {
-        category = new Category("Programação", "programacao", "Azul", 1);
+        category = new Category("Programação", "programacao", "#6BD1FF", 1);
         instructor = new User("Ana", "ana@email.com", Role.INSTRUCTOR, "123456");
         student = new User("Bia", "bia@email.com", Role.STUDENT, "123456");
     }

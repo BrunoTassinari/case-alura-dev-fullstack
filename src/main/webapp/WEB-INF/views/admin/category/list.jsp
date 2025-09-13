@@ -8,6 +8,7 @@
     <title>Lista de Categorias</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" href="/assets/external-libs/bootstrap/css/bootstrap.min.css">
+     <link rel="stylesheet" type="text/css" href="/assets/css/admin/category/list.css">
 </head>
 
 <div class="container">
@@ -21,8 +22,8 @@
             <tr>
                 <th>Nome</th>
                 <th>Código</th>
-                <th>Cor</th>
                 <th>Ordem</th>
+                <th>Cor</th>
                 <th></th>
             </tr>
             </thead>
@@ -31,8 +32,8 @@
                 <tr>
                     <td>${category.name()}</td>
                     <td>${category.code()}</td>
-                    <td>${category.color()}</td>
                     <td>${category.order()}</td>
+                    <td><span class="color-dot" style="background-color: ${category.color()}"></span></td>
                     <td><a class="btn btn-primary" href="/admin/category/edit/${category.id()}">Editar</a></td>
                 </tr>
             </c:forEach>
