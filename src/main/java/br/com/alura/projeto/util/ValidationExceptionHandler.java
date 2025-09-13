@@ -14,8 +14,6 @@ import java.util.List;
 
 @ControllerAdvice
 public class ValidationExceptionHandler {
-
-    // TODO ajustar para rota "/user/newStudent" utilizar novo padrao de retorno de erro
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorDTO> handleValidationExceptions(MethodArgumentNotValidException ex) {
         List<ErrorItemDTO> fieldErrors = ex.getBindingResult().getFieldErrors().stream()

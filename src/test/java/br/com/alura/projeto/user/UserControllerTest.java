@@ -39,8 +39,11 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newStudentUserDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$[0].field").value("password"))
-                .andExpect(jsonPath("$[0].message").isNotEmpty());
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.error").value("Bad Request"))
+                .andExpect(jsonPath("$.message").value("Validation Failed"))
+                .andExpect(jsonPath("$.errors[0].field").value("password"))
+                .andExpect(jsonPath("$.errors[0].message").isNotEmpty());
     }
 
     @Test
@@ -54,8 +57,11 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newStudentUserDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$[0].field").value("email"))
-                .andExpect(jsonPath("$[0].message").isNotEmpty());
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.error").value("Bad Request"))
+                .andExpect(jsonPath("$.message").value("Validation Failed"))
+                .andExpect(jsonPath("$.errors[0].field").value("email"))
+                .andExpect(jsonPath("$.errors[0].message").isNotEmpty());
     }
 
     @Test
@@ -69,8 +75,11 @@ class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(newStudentUserDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$[0].field").value("email"))
-                .andExpect(jsonPath("$[0].message").isNotEmpty());
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.error").value("Bad Request"))
+                .andExpect(jsonPath("$.message").value("Validation Failed"))
+                .andExpect(jsonPath("$.errors[0].field").value("email"))
+                .andExpect(jsonPath("$.errors[0].message").isNotEmpty());
     }
 
     @Test
