@@ -1,4 +1,6 @@
 <%@ page pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -19,16 +21,15 @@
         <h2>Ainda não estuda com a gente?</h2>
         <p>São mais de mil cursos nas seguintes áreas:</p>
 
-<%--    TODO: Implementar a Questão 3 (As informações devem vir do seu banco de dados)  --%>
         <div class="grid">
-            <div class="card"><h3>Escola_ PROGRAMAÇÃO</h3><p>Lógica de programação, .NET, Automação e Produtividade</p></div>
-            <div class="card"><h3>Escola_ FRONT-END</h3><p>HTML, CSS, Svelte, VueJS</p></div>
-            <div class="card"><h3>Escola_ DATA SCIENCE</h3><p>SQL e Banco de Dados, Engenharia de Dados, Análise de dados</p></div>
-            <div class="card"><h3>Escola_ INTELIGÊNCIA ARTIFICIAL</h3><p>IA para Criativos, IA para Programação, IA para Negócios</p></div>
-            <div class="card"><h3>Escola_ DEVOPS</h3><p>Linux, FinOps, Automação de processos</p></div>
-            <div class="card"><h3>Escola_ UX & DESIGN</h3><p>UI Design, Design System, UX Writing</p></div>
-            <div class="card"><h3>Escola_ MOBILE</h3><p>Flutter, Android, iOS</p></div>
-            <div class="card"><h3>Escola_ INOVAÇÃO & GESTÃO</h3><p>Agilidade, Liderança, Ensino e Aprendizagem</p></div>
+         <c:forEach items="${categories}" var="category">
+            <div class="card">
+
+                <h3 class="subtitle" style="color: ${category.color()};">Escola_</h3>
+                <h3 class="title" style="color: ${category.color()};">${category.name()}</h3>
+                <p>${category.courseNames()}</p>
+            </div>
+         </c:forEach>
         </div>
     </div>
 </div>
