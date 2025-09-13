@@ -64,6 +64,7 @@ public class CourseService {
         model.addAttribute("instructors", instructors);
     }
 
+    @Transactional
     public void inactivateCourse(String code) {
         Course courseToInactivate = courseRepository.findByCode(code)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found"));

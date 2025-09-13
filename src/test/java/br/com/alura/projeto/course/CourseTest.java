@@ -29,7 +29,7 @@ public class CourseTest {
     }
 
     @Test
-    void new_course__should_be_created_with_default_states() {
+    void newCourse__should_be_created_with_default_states() {
         Course course = new Course("Java Básico", "java-basico", instructor, category, "Curso de introdução");
 
         assertThat(course.getName()).isEqualTo("Java Básico");
@@ -40,7 +40,7 @@ public class CourseTest {
     }
 
     @Test
-    void new_course__should_throw_exception_when_name_is_null() {
+    void newCourse__should_throw_exception_when_name_is_null() {
         assertThatThrownBy(() -> {
             new Course(null, "java-basico", instructor, category, "Descrição");
         })
@@ -49,7 +49,7 @@ public class CourseTest {
     }
 
     @Test
-    void new_course__should_throw_exception_when_code_is_null() {
+    void newCourse__should_throw_exception_when_code_is_null() {
         assertThatThrownBy(() -> {
             new Course("Java Básico", null, instructor, category, "Descrição");
         })
@@ -76,7 +76,7 @@ public class CourseTest {
     }
 
     @Test
-    void new_course__should_not_allow_student_as_instructor() {
+    void newCourse__should_not_allow_student_as_instructor() {
         assertThatThrownBy(() -> {
             new Course("Java Básico", "java-basico", student, category, "Curso de introdução");
         }).isInstanceOf(BusinessException.class)
@@ -84,7 +84,7 @@ public class CourseTest {
     }
 
     @Test
-    void inactive_course__should_inactivate_an_active_course() {
+    void inactivateCourse__should_inactivate_an_active_course() {
         Course course = new Course("Java Básico", "java-basico", instructor, category, "Curso de introdução");
         assertThat(course.getStatus()).isEqualTo(Status.ACTIVE);
         assertThat(course.getInactivatedAt()).isNull();
@@ -96,7 +96,7 @@ public class CourseTest {
     }
 
     @Test
-    void inactive_course__should_throw_exception_when_trying_to_inactivate_an_already_inactive_course() {
+    void inactivateCourse__should_throw_exception_when_trying_to_inactivate_an_already_inactive_course() {
         Course course = new Course("Java Básico", "java-basico", instructor, category, "Curso de introdução");
 
         assertThatThrownBy(() -> {
