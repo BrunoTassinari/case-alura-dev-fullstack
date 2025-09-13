@@ -3,9 +3,12 @@ package br.com.alura.projeto.course;
 import br.com.alura.projeto.category.Category;
 import br.com.alura.projeto.category.CategoryOptionDTO;
 import br.com.alura.projeto.category.CategoryRepository;
+import br.com.alura.projeto.exceptions.DataConflictException;
+import br.com.alura.projeto.exceptions.ResourceNotFoundException;
 import br.com.alura.projeto.user.InstructorOptionDTO;
 import br.com.alura.projeto.user.User;
 import br.com.alura.projeto.user.UserRepository;
+import org.hibernate.exception.DataException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -59,5 +62,13 @@ public class CourseService {
 
         model.addAttribute("categories", categories);
         model.addAttribute("instructors", instructors);
+    }
+
+    public void inactivateCourse(String code) {
+        Course courseToInactivate = courseRepository.findByCode(code)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+
+        courseToInactivate.inactivate();
+        courseRepository.save(courseToInactivate);
     }
 }

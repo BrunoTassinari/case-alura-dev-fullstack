@@ -1,6 +1,8 @@
 package br.com.alura.projeto.course;
 
 import br.com.alura.projeto.category.Category;
+import br.com.alura.projeto.exceptions.BusinessException;
+import br.com.alura.projeto.exceptions.DataConflictException;
 import br.com.alura.projeto.user.Role;
 import br.com.alura.projeto.user.User;
 import jakarta.persistence.*;
@@ -68,8 +70,17 @@ public class Course {
         requireNonNull(category, "Category cannot be null");
 
         if (!user.isInstructor()) {
-            throw new IllegalArgumentException("User must be an instructor to create a course");
+            throw new BusinessException("User must be an instructor to create a course");
         }
+    }
+
+    public void inactivate() {
+        if (status == Status.INACTIVE) {
+            throw new DataConflictException("Course already inactive");
+        }
+
+        this.status = Status.INACTIVE;
+        this.inactivatedAt = LocalDateTime.now();
     }
 
     public Long getId() {

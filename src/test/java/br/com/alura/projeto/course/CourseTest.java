@@ -1,11 +1,16 @@
 package br.com.alura.projeto.course;
 
 import br.com.alura.projeto.category.Category;
+import br.com.alura.projeto.exceptions.BusinessException;
+import br.com.alura.projeto.exceptions.DataConflictException;
 import br.com.alura.projeto.user.Role;
 import br.com.alura.projeto.user.User;
 import br.com.alura.projeto.util.EncryptUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDateTime;
 
 import static br.com.alura.projeto.user.Role.STUDENT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -74,7 +79,29 @@ public class CourseTest {
     void new_course__should_not_allow_student_as_instructor() {
         assertThatThrownBy(() -> {
             new Course("Java Básico", "java-basico", student, category, "Curso de introdução");
-        }).isInstanceOf(IllegalArgumentException.class)
+        }).isInstanceOf(BusinessException.class)
                 .hasMessage("User must be an instructor to create a course");
+    }
+
+    @Test
+    void inactive_course__should_inactivate_an_active_course() {
+        Course course = new Course("Java Básico", "java-basico", instructor, category, "Curso de introdução");
+        assertThat(course.getStatus()).isEqualTo(Status.ACTIVE);
+        assertThat(course.getInactivatedAt()).isNull();
+
+        course.inactivate();
+
+        assertThat(course.getStatus()).isEqualTo(Status.INACTIVE);
+        assertThat(course.getInactivatedAt()).isNotNull();
+    }
+
+    @Test
+    void inactive_course__should_throw_exception_when_trying_to_inactivate_an_already_inactive_course() {
+        Course course = new Course("Java Básico", "java-basico", instructor, category, "Curso de introdução");
+
+        assertThatThrownBy(() -> {
+            course.inactivate();
+            course.inactivate();
+        }).isInstanceOf(DataConflictException.class).hasMessage("Course already inactive");
     }
 }
