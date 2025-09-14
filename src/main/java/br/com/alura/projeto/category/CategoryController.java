@@ -18,9 +18,11 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
-    public CategoryController(CategoryRepository categoryRepository) {
+    public CategoryController(CategoryRepository categoryRepository, CategoryService categoryService) {
         this.categoryRepository = categoryRepository;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/admin/categories")
@@ -56,28 +58,29 @@ public class CategoryController {
         return "redirect:/admin/categories";
     }
 
-    @GetMapping("/admin/category/edit/{code}")
-    public String edit(@PathVariable String code, Model model) {
-        Category category = categoryRepository.findByCode(code).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+    @GetMapping("/admin/category/edit/{id}")
+    public String edit(@PathVariable Long id, Model model) {
+        Category category = categoryService.getById(id);
 
         model.addAttribute("categoryForm", new CategoryForm(category));
         return "admin/category/form";
     }
 
-    @Transactional
-    @PostMapping("/admin/category/edit/{code}")
-    public String update(@PathVariable String code, @Validated(OnUpdate.class) CategoryForm form, BindingResult result, Model model) {
+    @PostMapping("/admin/category/edit/{id}")
+    public String update(@PathVariable Long id, @Validated(OnUpdate.class) CategoryForm form, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categoryForm", form);
-            return "admin/category/edit/{code}";
+            return "admin/category/edit/{id}";
         }
 
-        Category category = categoryRepository.findByCode(code).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-
-        category.updateInfo(form.getName(), form.getColor(), form.getOrder());
-        categoryRepository.save(category);
+        try {
+            categoryService.updateCategory(form);
+        } catch (ResourceNotFoundException ex) {
+            result.reject("business.error", ex.getMessage());
+            model.addAttribute("categoryForm", form);
+            return "admin/category/edit/{id}";
+        }
 
         return "redirect:/admin/categories";
     }
-
 }

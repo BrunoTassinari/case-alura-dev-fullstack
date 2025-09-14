@@ -1,18 +1,14 @@
 package br.com.alura.projeto.course;
 
 import br.com.alura.projeto.category.Category;
-import br.com.alura.projeto.category.CategoryOptionDTO;
-import br.com.alura.projeto.category.CategoryRepository;
+import br.com.alura.projeto.category.CategoryService;
 import br.com.alura.projeto.exceptions.DataConflictException;
 import br.com.alura.projeto.exceptions.ResourceNotFoundException;
-import br.com.alura.projeto.user.InstructorOptionDTO;
 import br.com.alura.projeto.user.User;
-import br.com.alura.projeto.user.UserRepository;
-import org.hibernate.exception.DataException;
+import br.com.alura.projeto.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 
 import java.util.List;
 
@@ -20,56 +16,72 @@ import java.util.List;
 public class CourseService {
 
     private final CourseRepository courseRepository;
-    private final CategoryRepository categoryRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
+    private final CategoryService categoryService;
 
-    public CourseService(CourseRepository courseRepository, CategoryRepository categoryRepository, UserRepository userRepository) {
+    public CourseService(CourseRepository courseRepository, UserService userService, CategoryService categoryService) {
         this.courseRepository = courseRepository;
-        this.categoryRepository = categoryRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
+        this.categoryService = categoryService;
     }
 
     @Transactional
-    public void createCourse(NewCourseForm form, BindingResult result) {
+    public void createCourse(CourseForm form) {
         if (courseRepository.existsByCode(form.getCode())) {
-            result.rejectValue("code", "code.exists", "Código já utilizado");
-            return;
+            throw new DataConflictException("Code already exists");
         }
 
-        Category category = categoryRepository.findById(form.getCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException("Categoria inválida"));
-
-        User user = userRepository.findById(form.getInstructorId())
-                .orElseThrow(() -> new IllegalArgumentException("Instrutor inválido"));
+        Category category = categoryService.getById(form.getCategoryId());
+        User user = userService.getById(form.getInstructorId());
 
         Course course = form.toModel(user, category);
         courseRepository.save(course);
     }
 
-    public List<CourseDTO>  findAllCourses(){
+    @Transactional
+    public void updateCourse(CourseForm form) {
+        Course course = this.getById(form.getId());
+        Category category = categoryService.getById(form.getCategoryId());
+        User user = userService.getById(form.getInstructorId());
+
+        boolean isCurrentlyActive = course.getStatus() == Status.ACTIVE;
+
+        if (form.isActive() && !isCurrentlyActive) {
+            course.activate();
+        } else if (!form.isActive() && isCurrentlyActive) {
+            course.inactivate();
+        }
+
+        course.updateInfo(form.getName(), user, category, form.getDescription());
+        courseRepository.save(course);
+    }
+
+    public List<CourseDTO> findAllCourses(){
        return courseRepository.findAll()
                .stream()
-               .map(CourseDTO::new)
-               .toList();
+               .map(CourseDTO::new).toList();
     }
 
     public void populateForm(Model model) {
-        List<CategoryOptionDTO> categories = categoryRepository.findAll().stream()
-                .map(c -> new CategoryOptionDTO(c.getId(), c.getName())).toList();
-
-        List<InstructorOptionDTO> instructors = userRepository.findAllInstructors().stream()
-                .map(u -> new InstructorOptionDTO(u.getId(), u.getName() + " - " + u.getEmail())).toList();
-
-        model.addAttribute("categories", categories);
-        model.addAttribute("instructors", instructors);
+        model.addAttribute("categories", categoryService.getCategoryOptions());
+        model.addAttribute("instructors", userService.getInstructorsOptions());
     }
 
     @Transactional
     public void inactivateCourse(String code) {
-        Course courseToInactivate = courseRepository.findByCode(code)
-                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+        Course courseToInactivate = getByCode(code);
 
         courseToInactivate.inactivate();
         courseRepository.save(courseToInactivate);
+    }
+
+    public Course getById(Long id) {
+        return courseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+    }
+
+    public Course getByCode(String code) {
+        return courseRepository.findByCode(code)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
     }
 }

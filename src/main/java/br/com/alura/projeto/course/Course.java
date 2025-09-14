@@ -83,6 +83,24 @@ public class Course {
         this.inactivatedAt = LocalDateTime.now();
     }
 
+    public void  activate() {
+        if (status == Status.ACTIVE) {
+            throw new DataConflictException("Course already active");
+        }
+
+        this.status = Status.ACTIVE;
+        this.inactivatedAt = null;
+    }
+
+    public void updateInfo (String name, User user, Category category, String description) {
+        validate(name, code, user, category);
+
+        this.name = name;
+        this.instructor = user;
+        this.category = category;
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
     }

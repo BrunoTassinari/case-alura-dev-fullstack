@@ -7,12 +7,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cadastrar nova Categoria</title>
+    <title>${empty categoryForm.id ? 'Cadastrar nova Categoria' : 'Editar Categoria'}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" href="/assets/external-libs/bootstrap/css/bootstrap.min.css">
 </head>
 
-<c:url value="${empty categoryForm.id ? '/admin/category/new' : '/admin/category/edit/'.concat(categoryForm.code)}" var="formAction"/>
+<c:url value="${empty categoryForm.id ? '/admin/category/new' : '/admin/category/edit/'.concat(categoryForm.id)}" var="formAction"/>
 
 <div class="container">
     <section class="panel panel-primary vertical-space">
@@ -21,30 +21,34 @@
         </div>
 
         <form:form modelAttribute="categoryForm" cssClass="form-horizontal panel-body" action="${formAction}" method="post">
+
+             <%-- Exibe mensagens de erro de validação --%>
+             <form:errors path="*" cssClass="alert alert-danger" element="div" />
+
             <div class="row form-group">
                 <div class="col-md-9">
-                    <label for="newCategory-name">Nome:</label>
-                    <form:input path="name" id="newCategory-name" cssClass="form-control" required="required"/>
+                    <label for="categoryForm-name">Nome:</label>
+                    <form:input path="name" id="categoryForm-name" cssClass="form-control" required="required"/>
                 </div>
 
                 <div class="col-md-9">
-                    <label for="newCategory-code">Código:</label>
-                    <form:input path="code" id="newCategory-code" cssClass="form-control" required="required"/>
+                    <label for="categoryForm-code">Código:</label>
+                    <form:input path="code" id="categoryForm-code" cssClass="form-control" required="required" />
                 </div>
 
                  <div class="col-md-9">
-                    <label for="newCategory-order">Ordem:</label>
-                    <form:input path="order" type="number" min="1" id="newCategory-order" cssClass="form-control" required="required"/>
+                    <label for="categoryForm-order">Ordem:</label>
+                    <form:input path="order" type="number" min="1" id="categoryForm-order" cssClass="form-control" required="required"/>
                 </div>
 
                 <div class="col-md-9">
-                    <label for="newCategory-color">Cor:</label>
-                    <form:input type="color" path="color" id="newCategory-color" cssClass="form-control" style="width: 48px; padding: 0" required="required"/>
+                    <label for="categoryForm-color">Cor:</label>
+                    <form:input type="color" path="color" id="categoryForm-color" cssClass="form-control" style="width: 48px; padding: 0" required="required"/>
                 </div>
 
             </div>
 
-            <input class="btn btn-success submit" type="submit" value="Salvar"/>
+            <input class="btn btn-success submit" type="submit" value="${!empty categoryForm.id ? 'Atualizar' : 'Salvar'}"/>
         </form:form>
     </section>
 </div>
