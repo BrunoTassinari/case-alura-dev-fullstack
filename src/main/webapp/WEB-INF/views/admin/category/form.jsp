@@ -12,13 +12,15 @@
     <link rel="stylesheet" type="text/css" href="/assets/external-libs/bootstrap/css/bootstrap.min.css">
 </head>
 
+<c:url value="${empty categoryForm.id ? '/admin/category/new' : '/admin/category/edit/'.concat(categoryForm.code)}" var="formAction"/>
+
 <div class="container">
     <section class="panel panel-primary vertical-space">
         <div class="panel-heading">
-            <h1>Cadastrar nova categoria</h1>
+            <h1>${empty categoryForm.id ? 'Cadastrar nova Categoria' : 'Editar Categoria'}</h1>
         </div>
 
-        <form:form modelAttribute="newCategoryForm" cssClass="form-horizontal panel-body" action="/admin/category/new" method="post">
+        <form:form modelAttribute="categoryForm" cssClass="form-horizontal panel-body" action="${formAction}" method="post">
             <div class="row form-group">
                 <div class="col-md-9">
                     <label for="newCategory-name">Nome:</label>

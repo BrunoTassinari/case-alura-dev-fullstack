@@ -34,7 +34,7 @@
                     <td>${category.code()}</td>
                     <td>${category.order()}</td>
                     <td><span class="color-dot" style="background-color: ${category.color()}"></span></td>
-                    <td><a class="btn btn-primary" href="/admin/category/edit/${category.id()}">Editar</a></td>
+                    <td><a class="btn btn-primary" href="/admin/category/edit/${category.code()}">Editar</a></td>
                 </tr>
             </c:forEach>
             </tbody>

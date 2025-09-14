@@ -1,11 +1,15 @@
 package br.com.alura.projeto.category;
 
-import jakarta.validation.Valid;
+import br.com.alura.projeto.exceptions.ResourceNotFoundException;
+import br.com.alura.projeto.validation.OnCreate;
+import br.com.alura.projeto.validation.OnUpdate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -32,13 +36,13 @@ public class CategoryController {
     }
 
     @GetMapping("/admin/category/new")
-    public String create(NewCategoryForm newCategory, Model model) {
-        return "admin/category/newForm";
+    public String create(CategoryForm newCategory, Model model) {
+        return "admin/category/form";
     }
 
     @Transactional
     @PostMapping("/admin/category/new")
-    public String save(@Valid NewCategoryForm form, BindingResult result, Model model) {
+    public String save(@Validated(OnCreate.class) CategoryForm form, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
             return create(form, model);
@@ -49,6 +53,30 @@ public class CategoryController {
         }
 
         categoryRepository.save(form.toModel());
+        return "redirect:/admin/categories";
+    }
+
+    @GetMapping("/admin/category/edit/{code}")
+    public String edit(@PathVariable String code, Model model) {
+        Category category = categoryRepository.findByCode(code).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+        model.addAttribute("categoryForm", new CategoryForm(category));
+        return "admin/category/form";
+    }
+
+    @Transactional
+    @PostMapping("/admin/category/edit/{code}")
+    public String update(@PathVariable String code, @Validated(OnUpdate.class) CategoryForm form, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("categoryForm", form);
+            return "admin/category/edit/{code}";
+        }
+
+        Category category = categoryRepository.findByCode(code).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
+
+        category.updateInfo(form.getName(), form.getColor(), form.getOrder());
+        categoryRepository.save(category);
+
         return "redirect:/admin/categories";
     }
 

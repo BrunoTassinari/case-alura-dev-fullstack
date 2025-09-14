@@ -48,6 +48,12 @@ public class Category {
         this.order = order;
     }
 
+    public void updateInfo(String name, String color, int order) {
+        this.name = name;
+        this.color = color;
+        this.order = order;
+    }
+
     public Long getId() {
         return id;
     }
