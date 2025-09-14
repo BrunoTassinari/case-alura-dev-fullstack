@@ -6,11 +6,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CategoryTest {
     @Test
-    void updateInfoCategory_should_update_fields_correctly() {
+    void updateInfoCategory__should_update_fields_correctly() {
         String code = "code";
-        Category category = new Category("Dotnet", code, "#FF0000", 1);
+        Category category = new Category("Devops", code, "#FF0000", 1);
 
-        String newName = ".Net";
+        String newName = "Ops";
         String newColor = "#0000FF";
         int newOrder = 5;
 
