@@ -1,5 +1,7 @@
 package br.com.alura.projeto.course;
 
+import br.com.alura.projeto.category.Category;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -7,7 +9,7 @@ public record CourseDTO(Long id,
                         String name,
                         String code,
                         String instructor,
-                        String category,
+                        Category category,
                         String description,
                         String status,
                         String inactivatedAt) {
@@ -19,7 +21,7 @@ public record CourseDTO(Long id,
                 course.getName(),
                 course.getCode(),
                 course.getInstructor().getEmail(),
-                course.getCategory().getName(),
+                course.getCategory(),
                 course.getDescription(),
                 formatStatus(course.getStatus()),
                 formatDate(course.getInactivatedAt())
