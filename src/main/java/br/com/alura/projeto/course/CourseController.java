@@ -1,9 +1,10 @@
 package br.com.alura.projeto.course;
+import br.com.alura.projeto.course.dto.CourseDTO;
+import br.com.alura.projeto.exceptions.BusinessException;
 import br.com.alura.projeto.exceptions.DataConflictException;
 import br.com.alura.projeto.exceptions.ResourceNotFoundException;
 import br.com.alura.projeto.validation.OnCreate;
 import br.com.alura.projeto.validation.OnUpdate;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +49,7 @@ public class CourseController {
 
         try {
             courseService.createCourse(form);
-        } catch (ResourceNotFoundException | DataConflictException ex) {
+        } catch (ResourceNotFoundException | BusinessException | DataConflictException ex) {
             result.reject("business.error", ex.getMessage());
             return create(form, model);
         }
@@ -81,7 +82,7 @@ public class CourseController {
 
         try {
             courseService.updateCourse(form);
-        } catch (ResourceNotFoundException | DataConflictException ex) {
+        } catch (ResourceNotFoundException | BusinessException | DataConflictException ex) {
             result.reject("business.error", ex.getMessage());
             model.addAttribute("courseForm", form);
             return "admin/course/form";

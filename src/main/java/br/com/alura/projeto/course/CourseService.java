@@ -2,6 +2,7 @@ package br.com.alura.projeto.course;
 
 import br.com.alura.projeto.category.Category;
 import br.com.alura.projeto.category.CategoryService;
+import br.com.alura.projeto.course.dto.CourseDTO;
 import br.com.alura.projeto.exceptions.BusinessException;
 import br.com.alura.projeto.exceptions.DataConflictException;
 import br.com.alura.projeto.exceptions.ResourceNotFoundException;

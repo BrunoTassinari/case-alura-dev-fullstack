@@ -1,6 +1,8 @@
-package br.com.alura.projeto.course;
+package br.com.alura.projeto.course.dto;
 
 import br.com.alura.projeto.category.Category;
+import br.com.alura.projeto.course.Course;
+import br.com.alura.projeto.course.Status;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
