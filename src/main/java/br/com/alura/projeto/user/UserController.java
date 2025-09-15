@@ -1,10 +1,11 @@
 package br.com.alura.projeto.user;
 
-import br.com.alura.projeto.util.ErrorItemDTO;
+import br.com.alura.projeto.user.dto.NewInstructorDTO;
+import br.com.alura.projeto.user.dto.NewStudentDTO;
+import br.com.alura.projeto.user.dto.UserListItemDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,30 +15,28 @@ import java.util.List;
 
 @RestController
 public class UserController {
+    private final UserService userService;
 
-    private final UserRepository userRepository;
-
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @Transactional
     @PostMapping("/user/newStudent")
-    public ResponseEntity newStudent(@RequestBody @Valid NewStudentUserDTO newStudent) {
-        if(userRepository.existsByEmail(newStudent.getEmail())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ErrorItemDTO("email", "Email já cadastrado no sistema"));
-        }
+    public ResponseEntity newStudent(@RequestBody @Valid NewStudentDTO newStudent) {
+        userService.createUser(newStudent);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
-        User user = newStudent.toModel();
-        userRepository.save(user);
-
+    @PostMapping("/user/newInstructor")
+    public ResponseEntity newInstructor(@RequestBody @Valid NewInstructorDTO newInstructor) {
+        userService.createUser(newInstructor);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping("/user/all")
     public List<UserListItemDTO> listAllUsers() {
-        return userRepository.findAll().stream().map(UserListItemDTO::new).toList();
+        List<UserListItemDTO> list = userService.listUsers();
+        return list;
     }
 
 }
