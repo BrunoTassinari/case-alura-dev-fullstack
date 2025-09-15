@@ -19,3 +19,13 @@
 .badge-inactive {
     background-color: #dc2626;
 }
+
+.list-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-heading h1 {
+    margin: 16px 0;
+}
