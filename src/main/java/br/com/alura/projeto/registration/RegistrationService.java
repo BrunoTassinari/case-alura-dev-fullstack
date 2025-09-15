@@ -44,4 +44,8 @@ public class RegistrationService {
         Registration registration = new Registration(user, course);
         registrationRepository.save(registration);
     }
+
+    public List<RegistrationReportItem> generateReport() {
+        return registrationRepository.findCourseRegistrationReport();
+    }
 }

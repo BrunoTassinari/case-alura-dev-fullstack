@@ -1,9 +1,7 @@
 package br.com.alura.projeto.course;
 
 import br.com.alura.projeto.category.Category;
-import br.com.alura.projeto.exceptions.BusinessException;
 import br.com.alura.projeto.exceptions.DataConflictException;
-import br.com.alura.projeto.user.Role;
 import br.com.alura.projeto.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -68,10 +66,6 @@ public class Course {
         requireNonNull(code, "Code cannot be null");
         requireNonNull(user, "Instructor cannot be null");
         requireNonNull(category, "Category cannot be null");
-
-        if (!user.isInstructor()) {
-            throw new BusinessException("User must be an instructor to create a course");
-        }
     }
 
     public void inactivate() {
@@ -135,5 +129,9 @@ public class Course {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public Boolean isActive() {
+        return status == Status.ACTIVE;
     }
 }

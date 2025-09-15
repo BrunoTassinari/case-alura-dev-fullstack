@@ -2,6 +2,7 @@ package br.com.alura.projeto.course;
 
 import br.com.alura.projeto.category.Category;
 import br.com.alura.projeto.category.CategoryService;
+import br.com.alura.projeto.exceptions.BusinessException;
 import br.com.alura.projeto.exceptions.DataConflictException;
 import br.com.alura.projeto.exceptions.ResourceNotFoundException;
 import br.com.alura.projeto.user.User;
@@ -31,8 +32,13 @@ public class CourseService {
             throw new DataConflictException("Code already exists");
         }
 
-        Category category = categoryService.getById(form.getCategoryId());
         User user = userService.getById(form.getInstructorId());
+
+        if(!user.isInstructor()) {
+            throw new BusinessException("User must be an instructor to create a course");
+        }
+
+        Category category = categoryService.getById(form.getCategoryId());
 
         Course course = form.toModel(user, category);
         courseRepository.save(course);

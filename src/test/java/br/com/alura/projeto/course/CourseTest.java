@@ -1,7 +1,6 @@
 package br.com.alura.projeto.course;
 
 import br.com.alura.projeto.category.Category;
-import br.com.alura.projeto.exceptions.BusinessException;
 import br.com.alura.projeto.exceptions.DataConflictException;
 import br.com.alura.projeto.user.Role;
 import br.com.alura.projeto.user.User;
@@ -15,17 +14,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 public class CourseTest {
     private Category category;
     private User instructor;
-    private User student;
 
     @BeforeEach
     void setUp() {
         category = new Category("Programação", "programacao", "#6BD1FF", 1);
         instructor = new User("Ana", "ana@email.com", Role.INSTRUCTOR, "123456");
-        student = new User("Bia", "bia@email.com", Role.STUDENT, "123456");
     }
 
     @Test
-    void newCourse__should_be_created_with_default_states() {
+    void newCourse__should_be_created() {
         Course course = new Course("Java Básico", "java-basico", instructor, category, "Curso de introdução");
 
         assertThat(course.getName()).isEqualTo("Java Básico");
@@ -69,14 +66,6 @@ public class CourseTest {
         })
                 .isInstanceOf(NullPointerException.class)
                 .hasMessage("Category cannot be null");
-    }
-
-    @Test
-    void newCourse__should_not_allow_student_as_instructor() {
-        assertThatThrownBy(() -> {
-            new Course("Java Básico", "java-basico", student, category, "Curso de introdução");
-        }).isInstanceOf(BusinessException.class)
-                .hasMessage("User must be an instructor to create a course");
     }
 
     @Test

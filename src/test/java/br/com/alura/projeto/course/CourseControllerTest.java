@@ -50,7 +50,6 @@ public class CourseControllerTest {
     @Test
     void inactivateCourse__should_inactivate_course_request_is_valid() throws Exception{
         String courseCode = "java-basico";
-        Course course = new Course("Java Básico", courseCode, instructor, category, "Curso de introdução");
 
         mockMvc.perform(post("/course/{code}/inactive", courseCode))
                 .andExpect(status().isOk());
@@ -59,33 +58,33 @@ public class CourseControllerTest {
     @Test
     void inactivateCourse__should_return_not_found_when_course_not_exists() throws Exception{
         String courseCode = "java-intermediario";
-        String expectedErrorMessage = "Course not found";
+        String errorMessage = "Course not found";
 
-        doThrow(new ResourceNotFoundException("Course not found"))
+        doThrow(new ResourceNotFoundException(errorMessage))
                 .when(courseService)
                 .inactivateCourse(courseCode);
 
         mockMvc.perform(post("/course/{code}/inactive", courseCode)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value(expectedErrorMessage));
+                .andExpect(jsonPath("$.message").value(errorMessage));
     }
 
     @Test
     void inactivateCourse__should_return_conflict_when_course_already_inactivated() throws Exception{
         String courseCode = "java-basico";
-        String expectedErrorMessage = "Course already inactive";
+        String errorMessage = "Course already inactive";
         Course course = new Course("Java Básico", "java-basico", instructor, category, "Curso de introdução");
         course.inactivate();
 
-        doThrow(new DataConflictException(expectedErrorMessage))
+        doThrow(new DataConflictException(errorMessage))
                 .when(courseService)
                 .inactivateCourse(courseCode);
 
         mockMvc.perform(post("/course/{code}/inactive", courseCode)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.message").value(expectedErrorMessage));
+                .andExpect(jsonPath("$.message").value(errorMessage));
     }
 
     @Test
