@@ -13,10 +13,15 @@ import java.util.List;
 
 @RestController
 public class RegistrationController {
+    private final RegistrationService registrationService;
+
+    public RegistrationController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
 
     @PostMapping("/registration/new")
-    public ResponseEntity createCourse(@Valid @RequestBody NewRegistrationDTO newRegistration) {
-        // TODO: Implementar a Questão 5 - Criação de Matrículas aqui...
+    public ResponseEntity newRegistration(@Valid @RequestBody NewRegistrationDTO newRegistration) {
+        registrationService.createRegistration(newRegistration);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

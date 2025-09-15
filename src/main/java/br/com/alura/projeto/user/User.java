@@ -58,4 +58,8 @@ public class User {
     public Boolean isInstructor() {
         return role == Role.INSTRUCTOR;
     }
+
+    public Boolean isStudent() {
+        return role == Role.STUDENT;
+    }
 }
