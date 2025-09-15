@@ -1,10 +1,11 @@
 package br.com.alura.projeto.category;
 
+import br.com.alura.projeto.category.dto.CategoryDTO;
+import br.com.alura.projeto.exceptions.DataConflictException;
 import br.com.alura.projeto.exceptions.ResourceNotFoundException;
 import br.com.alura.projeto.validation.OnCreate;
 import br.com.alura.projeto.validation.OnUpdate;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -16,20 +17,15 @@ import java.util.List;
 
 @Controller
 public class CategoryController {
-    private final CategoryRepository categoryRepository;
     private final CategoryService categoryService;
 
-    public CategoryController(CategoryRepository categoryRepository, CategoryService categoryService) {
-        this.categoryRepository = categoryRepository;
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
     @GetMapping("/admin/categories")
     public String list(Model model) {
-        List<CategoryDTO> list = categoryRepository.findAll()
-                .stream()
-                .map(CategoryDTO::new)
-                .toList();
+        List<CategoryDTO> list = categoryService.listCategories();
 
         model.addAttribute("categories", list);
 
@@ -41,19 +37,19 @@ public class CategoryController {
         return "admin/category/form";
     }
 
-    @Transactional
     @PostMapping("/admin/category/new")
     public String save(@Validated(OnCreate.class) CategoryForm form, BindingResult result, Model model) {
-
         if (result.hasErrors()) {
             return create(form, model);
         }
 
-        if (categoryRepository.existsByCode(form.getCode())) {
+        try {
+            categoryService.createCategory(form);
+        } catch (DataConflictException ex) {
+            result.reject("business.error", ex.getMessage());
             return create(form, model);
         }
 
-        categoryRepository.save(form.toModel());
         return "redirect:/admin/categories";
     }
 

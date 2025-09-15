@@ -1,7 +1,7 @@
 package br.com.alura.projeto.login;
 
 import br.com.alura.projeto.category.CategoryService;
-import br.com.alura.projeto.category.CategoryWithCoursesDTO;
+import br.com.alura.projeto.category.dto.CategoryWithCoursesDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,17 +1,20 @@
 package br.com.alura.projeto.category;
+import br.com.alura.projeto.category.dto.CategoryDTO;
+import br.com.alura.projeto.category.dto.CategoryOptionDTO;
+import br.com.alura.projeto.category.dto.CategoryWithCoursesDTO;
 import br.com.alura.projeto.course.Course;
+import br.com.alura.projeto.exceptions.DataConflictException;
 import br.com.alura.projeto.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
-
     private final CategoryRepository categoryRepository;
-
 
     public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
@@ -27,6 +30,21 @@ public class CategoryService {
         return categoryRepository.findAll()
                 .stream()
                 .map(c -> new CategoryOptionDTO(c.getId(), c.getName())).toList();
+    }
+
+    public List<CategoryDTO> listCategories() {
+        return categoryRepository.findAll()
+                .stream().sorted(Comparator.comparing(Category::getOrder))
+                .map(CategoryDTO::new).toList();
+    }
+
+    @Transactional
+    public void createCategory(CategoryForm form) {
+        if (categoryRepository.existsByCode(form.getCode())) {
+            throw new DataConflictException("Code already exists");
+        }
+
+        categoryRepository.save(form.toModel());
     }
 
     @Transactional
@@ -47,9 +65,5 @@ public class CategoryService {
 
     public Category getById(Long id) {
         return categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
-    }
-
-    public Category getByCode(String code) {
-        return categoryRepository.findByCode(code).orElseThrow(() -> new ResourceNotFoundException("Category not found"));
     }
 }
