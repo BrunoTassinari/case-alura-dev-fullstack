@@ -16,7 +16,6 @@ import java.util.List;
 
 @Controller
 public class CategoryController {
-
     private final CategoryRepository categoryRepository;
     private final CategoryService categoryService;
 
@@ -70,7 +69,7 @@ public class CategoryController {
     public String update(@PathVariable Long id, @Validated(OnUpdate.class) CategoryForm form, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categoryForm", form);
-            return "admin/category/edit/{id}";
+            return "admin/category/form";
         }
 
         try {
@@ -78,7 +77,7 @@ public class CategoryController {
         } catch (ResourceNotFoundException ex) {
             result.reject("business.error", ex.getMessage());
             model.addAttribute("categoryForm", form);
-            return "admin/category/edit/{id}";
+            return "admin/category/form";
         }
 
         return "redirect:/admin/categories";

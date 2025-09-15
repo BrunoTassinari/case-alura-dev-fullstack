@@ -16,14 +16,14 @@ public class CourseForm {
     private String name;
 
     @NotBlank(groups = OnCreate.class, message = "O código é obrigatório")
-    @Length(min = 4, max = 10, message = "O código deve ter entre 4 e 10 caracteres")
-    @Pattern(regexp = "^[a-z-]*$", message = "O código deve conter apenas letras minúsculas e hífens")
+    @Length(groups = OnCreate.class, min = 4, max = 10, message = "O código deve ter entre 4 e 10 caracteres")
+    @Pattern(groups = OnCreate.class, regexp = "^[a-z-]*$", message = "O código deve conter apenas letras minúsculas e hífens")
     private String code;
 
-    @NotNull(groups = OnCreate.class, message = "O instrutor é obrigatório")
+    @NotNull(message = "O instrutor é obrigatório")
     private Long instructorId;
 
-    @NotNull(groups = OnCreate.class, message = "A categoria é obrigatória")
+    @NotNull(message = "A categoria é obrigatória")
     private Long categoryId;
 
     private String description;

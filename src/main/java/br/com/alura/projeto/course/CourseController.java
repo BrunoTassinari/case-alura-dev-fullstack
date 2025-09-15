@@ -17,7 +17,6 @@ import java.util.List;
 
 @Controller
 public class CourseController {
-
     private final CourseService courseService;
 
     public CourseController(CourseService courseService1) {
@@ -77,7 +76,7 @@ public class CourseController {
         if (result.hasErrors()) {
             courseService.populateForm(model);
             model.addAttribute("courseForm", form);
-            return "admin/course/edit/{id}";
+            return "admin/course/form";
         }
 
         try {
@@ -85,7 +84,7 @@ public class CourseController {
         } catch (ResourceNotFoundException | DataConflictException ex) {
             result.reject("business.error", ex.getMessage());
             model.addAttribute("courseForm", form);
-            return "admin/course/edit/{id}";
+            return "admin/course/form";
         }
 
         return "redirect:/admin/courses";

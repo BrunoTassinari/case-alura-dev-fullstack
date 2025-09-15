@@ -13,7 +13,7 @@ public class CategoryForm {
     private String name;
 
     @NotBlank(groups = OnCreate.class, message = "O código é obrigatório")
-    @Length(min = 4, max = 10)
+    @Length(groups = OnCreate.class, min = 4, max = 10)
     private String code;
 
     @Min(1)
