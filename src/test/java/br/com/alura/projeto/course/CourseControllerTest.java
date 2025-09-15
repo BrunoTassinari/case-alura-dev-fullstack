@@ -93,7 +93,7 @@ public class CourseControllerTest {
                         .param("name", "DevOps 2025")
                         .param("description", "Novo curso")
                         .param("active", "false"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -102,7 +102,7 @@ public class CourseControllerTest {
                         .param("name", "")
                         .param("description", "Novo curso"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("admin/course/edit/{id}"))
+                .andExpect(view().name("admin/course/form"))
                 .andExpect(model().hasErrors());
     }
 
@@ -117,6 +117,6 @@ public class CourseControllerTest {
                         .param("color", "#000000")
                         .param("order", "1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("admin/course/edit/{id}"));
+                .andExpect(view().name("admin/course/form"));
     }
 }

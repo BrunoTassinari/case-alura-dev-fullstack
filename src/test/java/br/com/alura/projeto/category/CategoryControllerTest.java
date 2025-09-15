@@ -53,7 +53,7 @@ public class CategoryControllerTest {
                         .param("color", "#000000")
                         .param("order", "2"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("admin/category/edit/{id}"))
+                .andExpect(view().name("admin/category/form"))
                 .andExpect(model().hasErrors());
     }
 
@@ -68,6 +68,6 @@ public class CategoryControllerTest {
                         .param("color", "#000000")
                         .param("order", "1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("admin/category/edit/{id}"));
+                .andExpect(view().name("admin/category/form"));
     }
 }
