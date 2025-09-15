@@ -1,6 +1,7 @@
 package br.com.alura.projeto.registration;
 
 import br.com.alura.projeto.exceptions.BusinessException;
+import br.com.alura.projeto.registration.dto.NewRegistrationDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -19,7 +19,7 @@ public class RegistrationTest {
         Category category = new Category("Programação", "programacao", "#6BD1FF", 1);
         User instructor = new User("Ana", "ana@email.com", Role.INSTRUCTOR, "123456");
 
-        course = new Course("Java Básico", "java-basico", instructor, category, "Curso de introdução");
+        course = new Course("Java Básico", "java", instructor, category, "Curso de introdução");
         student = new User("Ana", "ana@email.com", Role.STUDENT, "123456");
     }
 
