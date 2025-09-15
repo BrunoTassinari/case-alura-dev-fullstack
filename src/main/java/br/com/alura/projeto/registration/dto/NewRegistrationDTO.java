@@ -1,4 +1,4 @@
-package br.com.alura.projeto.registration;
+package br.com.alura.projeto.registration.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

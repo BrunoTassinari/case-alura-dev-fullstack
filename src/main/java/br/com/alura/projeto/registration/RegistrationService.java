@@ -1,9 +1,9 @@
 package br.com.alura.projeto.registration;
 
-import br.com.alura.projeto.category.Category;
 import br.com.alura.projeto.course.Course;
 import br.com.alura.projeto.course.CourseService;
 import br.com.alura.projeto.exceptions.BusinessException;
+import br.com.alura.projeto.registration.dto.NewRegistrationDTO;
 import br.com.alura.projeto.user.User;
 import br.com.alura.projeto.user.UserService;
 import org.springframework.stereotype.Service;
